@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: innoscripta_news_aggregator_app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./vendor:/var/www/vendor
+      - ./storage:/var/www/storage
+    networks:
+      - innoscripta_news_aggregator_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: innoscripta_news_aggregator_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: innoscripta_news_aggregator
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql_data:/var/lib/mysql
+    networks:
+      - innoscripta_news_aggregator_network
+
+  redis:
+    image: redis:alpine
+    container_name: innoscripta_news_aggregator_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - innoscripta_news_aggregator_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: innoscripta_news_aggregator_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - innoscripta_news_aggregator_network
+
+networks:
+  innoscripta_news_aggregator_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
