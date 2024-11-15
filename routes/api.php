@@ -10,6 +10,8 @@ Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->middleware(['ability:logout']);
+    Route::get('/user', [AuthController::class, 'user'])
+        ->middleware(['ability:user-info']);
 });

@@ -38,7 +38,8 @@ class AuthController extends Controller
 
         $user = User::create($payload);
 
-        $token = $user->createToken($this->tokenName)->plainTextToken;
+        $token = $user->createToken($this->tokenName, ['logout', 'user-info'])
+            ->plainTextToken;
 
         return response()->json([
             'data' => [
@@ -70,7 +71,8 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = $user->createToken($this->tokenName)->plainTextToken;
+        $token = $user->createToken($this->tokenName, ['logout', 'user-info'])
+            ->plainTextToken;
 
         return response()->json([
             'data' => [
