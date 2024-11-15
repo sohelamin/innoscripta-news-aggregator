@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
-class PasswordResetController extends Controller
+class PasswordResetController extends ApiController
 {
     /**
      * Send password reset link.
@@ -18,13 +17,13 @@ class PasswordResetController extends Controller
      */
     public function sendResetLink(Request $request): JsonResponse
     {
-        $request->validate(['email' => 'required|email']);
+        $request->validate(['email' => 'required|email|max:255']);
 
         $status = Password::sendResetLink($request->only('email'));
 
         return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => __($status)], 200)
-            : response()->json(['message' => __($status)], 400);
+            ? $this->successResponse([], __($status))
+            : $this->errorResponse(__($status));
     }
 
     /**
@@ -37,8 +36,8 @@ class PasswordResetController extends Controller
     {
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed',
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|min:8|max:64|confirmed',
         ]);
 
         $status = Password::reset(
@@ -51,7 +50,7 @@ class PasswordResetController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? response()->json(['message' => __($status)], 200)
-            : response()->json(['message' => __($status)], 400);
+            ? $this->successResponse([], __($status))
+            : $this->errorResponse(__($status));
     }
 }
