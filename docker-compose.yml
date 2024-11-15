@@ -18,6 +18,8 @@ services:
       - ./storage:/var/www/storage
     networks:
       - innoscripta_news_aggregator_network
+    env_file:
+      - ./.env
 
   mysql:
     image: mysql:8.0
