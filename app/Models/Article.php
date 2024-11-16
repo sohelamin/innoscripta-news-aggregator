@@ -33,6 +33,8 @@ class Article extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'source_id',
+        'author_id',
         'created_at',
         'updated_at',
     ];

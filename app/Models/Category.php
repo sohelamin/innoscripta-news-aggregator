@@ -20,6 +20,17 @@ class Category extends Model
     ];
 
     /**
+     * The attributes that will be hidden.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'pivot',
+    ];
+
+    /**
      * The articles that belong to the category.
      */
     public function articles(): BelongsToMany

@@ -21,6 +21,16 @@ class Source extends Model
     ];
 
     /**
+     * The attributes that will be hidden.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
      * Get the articles for the author.
      */
     public function articles(): HasMany

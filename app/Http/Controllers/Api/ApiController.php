@@ -14,7 +14,7 @@ abstract class ApiController
      * @param int $statusCode
      * @return \Illuminate\Http\JsonResponse
      */
-    public function successResponse(array $data = [], string $message = 'Success', int $statusCode = 200): JsonResponse
+    public function successResponse(mixed $data = null, string $message = 'Success', int $statusCode = 200): JsonResponse
     {
         return response()->json([
             'status' => true,
