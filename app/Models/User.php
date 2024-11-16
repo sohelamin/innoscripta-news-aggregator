@@ -59,4 +59,12 @@ class User extends Authenticatable
     {
         $this->notify(new CustomPasswordReset($token));
     }
+
+    /**
+     * Get the preferences for the user.
+     */
+    public function preferences()
+    {
+        return $this->hasMany(UserPreference::class);
+    }
 }

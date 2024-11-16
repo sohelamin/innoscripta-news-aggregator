@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Article extends Model
+class UserPreference extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -14,17 +13,22 @@ class Article extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
-        'content',
-        'url',
-        'image_url',
-        'puplished_at',
+        'user_id',
         'source_id',
+        'category_id',
         'author_id',
     ];
 
     /**
-     * Get the source that owns the article.
+     * Get the user that owns the preference.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the source that owns the preference.
      */
     public function source(): BelongsTo
     {
@@ -32,7 +36,7 @@ class Article extends Model
     }
 
     /**
-     * Get the author that owns the article.
+     * Get the author that owns the preference.
      */
     public function author(): BelongsTo
     {
@@ -40,10 +44,10 @@ class Article extends Model
     }
 
     /**
-     * The categories that belong to the article.
+     * Get the category that owns the preference.
      */
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 }

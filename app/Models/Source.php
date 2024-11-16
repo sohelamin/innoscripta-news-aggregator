@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Source extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'url',
+    ];
+
+    /**
      * Get the articles for the author.
      */
     public function articles(): HasMany
