@@ -17,6 +17,19 @@ class AuthController extends ApiController
     private string $tokenName = 'my-app';
 
     /**
+     * User abilities.
+     *
+     * @var array
+     */
+    private array $abilities = [
+        'logout',
+        'user-info',
+        'set-preferences',
+        'get-preferences',
+        'personalized-feed',
+    ];
+
+    /**
      * Register new user.
      *
      * @param Request $request
@@ -36,7 +49,7 @@ class AuthController extends ApiController
 
         $user = User::create($payload);
 
-        $token = $user->createToken($this->tokenName, ['logout', 'user-info'])
+        $token = $user->createToken($this->tokenName, $this->abilities)
             ->plainTextToken;
 
         return $this->successResponse([
@@ -67,7 +80,7 @@ class AuthController extends ApiController
             ]);
         }
 
-        $token = $user->createToken($this->tokenName, ['logout', 'user-info'])
+        $token = $user->createToken($this->tokenName, $this->abilities)
             ->plainTextToken;
 
         return $this->successResponse([

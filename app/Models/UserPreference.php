@@ -20,6 +20,16 @@ class UserPreference extends Model
     ];
 
     /**
+     * The attributes that will be hidden.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
      * Get the user that owns the preference.
      */
     public function user(): BelongsTo
