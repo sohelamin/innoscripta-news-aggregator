@@ -7,42 +7,73 @@ use Illuminate\Support\Facades\Http;
 
 class NewsAPIFetcher implements NewsFetcherInterface
 {
+    /**
+     * Base URL for this fetcher.
+     *
+     * @var string
+     */
     protected string $baseUrl;
+
+    /**
+     * API key for this fetcher.
+     *
+     * @var string
+     */
     protected string $apiKey;
 
+    /**
+     * Constructor function.
+     *
+     * @param string $baseUrl
+     * @param string $apiKey
+     */
     public function __construct(string $baseUrl, string $apiKey)
     {
         $this->baseUrl = $baseUrl;
         $this->apiKey = $apiKey;
     }
 
-    public function fetchNews(): array
+    /**
+     * Fetch the news.
+     *
+     * @param array $categories
+     * @return array
+     */
+    public function fetchNews($categories = []): array
     {
-        $category = 'technology';
+        if (empty($categories)) {
+            return [];
+        }
+
+        $category = $categories[0];
 
         $response = Http::get("{$this->baseUrl}/top-headlines", [
             'apiKey' => $this->apiKey,
             'country' => 'us',
-            'category' => $category,
+            'category' => $category->name,
         ]);
 
         if ($response->successful()) {
             $articles = $response->json()['articles'] ?? [];
 
-            return array_map(function ($item) use ($category) {
-                return [
-                    'title' => $item['title'],
-                    'content' => $item['description'] ?? null,
-                    'url' => $item['url'],
-                    'image_url' => $item['urlToImage'] ?? null,
-                    'published_at' => $item['publishedAt'] ? Carbon::parse($item['publishedAt']) : null,
-                    // 'author' => $item['author'] ?? null,
-                    // 'source' => $item['source']['name'] ?? null,
-                    // 'category' => $category,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }, $articles);
+            $processArticles = [];
+            foreach ($articles as $article) {
+                if (!empty($article['title']) && !empty($article['description'])) {
+                    $processArticles[] = [
+                        'title' => $article['title'],
+                        'content' => $article['description'],
+                        'url' => $article['url'],
+                        'image_url' => $article['urlToImage'] ?? null,
+                        'published_at' => $article['publishedAt'] ? Carbon::parse($article['publishedAt']) : null,
+                        'author' => $article['author'] ?? null,
+                        'category_id' => $category->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            return $processArticles;
         }
 
         return [];

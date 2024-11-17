@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Source;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,7 +23,42 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Category::factory(20)->create();
+        $now = now();
+        Category::insert([
+            [
+                'name' => 'technology',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'business',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'sports',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'entertainment',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'world',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+        ]);
+        Source::insert([
+            [
+                'name' => 'NewsAPI',
+                'url' => 'https://newsapi.org/',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+        ]);
         Article::factory(20)->create();
     }
 }

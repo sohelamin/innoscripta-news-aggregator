@@ -19,7 +19,7 @@ class CategoryController extends ApiController
         $page = $request->has('page') ? $request->query('page') : 1;
         $cacheKey = "categories_page_$page";
 
-        $categories = cache()->remember($cacheKey, now()->addHours(12), function () {
+        $categories = cache()->remember($cacheKey, now()->addHours(1), function () {
             return Category::orderBy('id', 'desc')
                 ->paginate(20);
         });
@@ -37,7 +37,7 @@ class CategoryController extends ApiController
     {
         $cacheKey = "category_{$id}";
 
-        $category = cache()->remember($cacheKey, now()->addHours(12), function () use ($id) {
+        $category = cache()->remember($cacheKey, now()->addHours(1), function () use ($id) {
             return Category::findOrFail($id);
         });
 

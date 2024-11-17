@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_preferences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('source_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('author_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('source_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->timestamps();
         });
     }

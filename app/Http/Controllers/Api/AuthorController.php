@@ -19,7 +19,7 @@ class AuthorController extends ApiController
         $page = $request->has('page') ? $request->query('page') : 1;
         $cacheKey = "authors_page_$page";
 
-        $authors = cache()->remember($cacheKey, now()->addHours(12), function () {
+        $authors = cache()->remember($cacheKey, now()->addHours(1), function () {
             return Author::orderBy('id', 'desc')
                 ->paginate(20);
         });
@@ -37,7 +37,7 @@ class AuthorController extends ApiController
     {
         $cacheKey = "author_{$id}";
 
-        $author = cache()->remember($cacheKey, now()->addHours(12), function () use ($id) {
+        $author = cache()->remember($cacheKey, now()->addHours(1), function () use ($id) {
             return Author::findOrFail($id);
         });
 
