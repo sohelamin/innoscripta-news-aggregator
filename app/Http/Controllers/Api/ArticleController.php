@@ -27,15 +27,17 @@ class ArticleController extends ApiController
                 ->when($request->date, function ($query, $date) {
                     $query->whereDate('published_at', $date);
                 })
-                ->when($request->category_id, function ($query, $categoryId) {
-                    $query->whereHas('categories', function ($q) use ($categoryId) {
-                        $q->where('categories.id', $categoryId);
+                ->when($request->category, function ($query, $category) {
+                    $query->whereHas('category', function ($q) use ($category) {
+                        $q->where('categories.name', $category);
                     });
                 })
-                ->when($request->source_id, function ($query, $sourceId) {
-                    $query->where('source_id', $sourceId);
+                ->when($request->source, function ($query, $source) {
+                    $query->whereHas('source', function ($q) use ($source) {
+                        $q->where('sources.name', $source);
+                    });
                 })
-                ->with(['source:id,name', 'author:id,name', 'categories:id,name'])
+                ->with(['source:id,name', 'author:id,name', 'category:id,name'])
                 ->orderBy('published_at', 'desc')
                 ->paginate(10);
         });

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Author;
+use App\Models\Category;
 use App\Models\Source;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,6 +27,7 @@ class ArticleFactory extends Factory
             'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
             'source_id' => Source::factory(),
             'author_id' => Author::factory(),
+            'category_id' => Category::factory(),
         ];
     }
 }

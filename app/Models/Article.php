@@ -25,6 +25,7 @@ class Article extends Model
         'published_at',
         'source_id',
         'author_id',
+        'category_id',
     ];
 
     /**
@@ -35,6 +36,7 @@ class Article extends Model
     protected $hidden = [
         'source_id',
         'author_id',
+        'category_id',
         'created_at',
         'updated_at',
     ];
@@ -56,11 +58,11 @@ class Article extends Model
     }
 
     /**
-     * The categories that belong to the article.
+     * The category that owns the article.
      */
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -75,9 +77,7 @@ class Article extends Model
         $query->where(function ($query) use ($user) {
             $query->whereIn('source_id', $user->preferences->pluck('source_id')->filter())
                 ->orWhereIn('author_id', $user->preferences->pluck('author_id')->filter())
-                ->orWhereHas('categories', function ($query2) use ($user) {
-                    $query2->whereIn('categories.id', $user->preferences->pluck('category_id')->filter());
-                });
+                ->orWhereIn('category_id', $user->preferences->pluck('category_id')->filter());
         });
 
         return $query;

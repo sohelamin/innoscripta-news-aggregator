@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable();
             $table->unsignedBigInteger('source_id')->nullable();
             $table->unsignedBigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamps();
         });
     }
