@@ -48,7 +48,7 @@ class FetchNewsJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $categories = Category::all();
+        $categories = Category::get();
         $source = Source::where('name', $this->source)->first();
 
         $articles = $this->fetcher->fetchNews($categories);
@@ -67,7 +67,7 @@ class FetchNewsJob implements ShouldQueue
         try {
             $this->storeArticles($articles);
         } catch (Exception $e) {
-            Log::error('News Storing Error: ', $e->getMessage());
+            Log::error('News Storing Error: ' . $e->getMessage());
         }
     }
 

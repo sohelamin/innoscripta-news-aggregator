@@ -25,7 +25,10 @@ class ArticleFactory extends Factory
             'url' => fake()->url,
             'image_url' => fake()->imageUrl,
             'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
-            'source_id' => Source::factory(),
+            'source_id' => function () {
+                return Source::query()->inRandomOrder()->value('id')
+                    ?? Source::factory()->create()->id;
+            },
             'author_id' => Author::factory(),
             'category_id' => function () {
                 return Category::query()->inRandomOrder()->value('id')

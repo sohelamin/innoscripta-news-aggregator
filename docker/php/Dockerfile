@@ -2,7 +2,6 @@ FROM php:8.3-fpm
 
 WORKDIR /var/www
 
-# Install PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg62-turbo-dev \
@@ -13,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     libonig-dev \
     libzip-dev \
+    supervisor \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring zip gd
 
@@ -28,5 +28,8 @@ RUN composer install --optimize-autoloader --no-dev
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-EXPOSE 9000
-CMD ["php-fpm"]
+# Supervisor configuration
+RUN mkdir -p /var/log/supervisor
+ENV supervisor_conf /etc/supervisor/supervisord.conf
+COPY ./docker/php/supervisord.conf ${supervisor_conf}
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

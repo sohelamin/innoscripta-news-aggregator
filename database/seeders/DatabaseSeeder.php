@@ -45,11 +45,6 @@ class DatabaseSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
-            [
-                'name' => 'world',
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
         ]);
         Source::insert([
             [

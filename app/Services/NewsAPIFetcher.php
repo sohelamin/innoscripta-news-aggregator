@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class NewsAPIFetcher implements NewsFetcherInterface
 {
@@ -45,37 +47,42 @@ class NewsAPIFetcher implements NewsFetcherInterface
             return [];
         }
 
-        $category = $categories[0];
+        $processAllArticles = [];
+        foreach ($categories as $category) {
+            try {
+                $response = Http::get("{$this->baseUrl}/top-headlines", [
+                    'apiKey' => $this->apiKey,
+                    'country' => 'us',
+                    'category' => $category->name,
+                ]);
 
-        $response = Http::get("{$this->baseUrl}/top-headlines", [
-            'apiKey' => $this->apiKey,
-            'country' => 'us',
-            'category' => $category->name,
-        ]);
+                if ($response->successful()) {
+                    $articles = $response->json()['articles'] ?? [];
 
-        if ($response->successful()) {
-            $articles = $response->json()['articles'] ?? [];
+                    $processArticles = [];
+                    foreach ($articles as $article) {
+                        if (!empty($article['title']) && !empty($article['description'])) {
+                            $processArticles[] = [
+                                'title' => $article['title'],
+                                'content' => $article['description'],
+                                'url' => $article['url'],
+                                'image_url' => $article['urlToImage'] ?? null,
+                                'published_at' => $article['publishedAt'] ? Carbon::parse($article['publishedAt']) : null,
+                                'author' => $article['author'] ?? null,
+                                'category_id' => $category->id,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ];
+                        }
+                    }
 
-            $processArticles = [];
-            foreach ($articles as $article) {
-                if (!empty($article['title']) && !empty($article['description'])) {
-                    $processArticles[] = [
-                        'title' => $article['title'],
-                        'content' => $article['description'],
-                        'url' => $article['url'],
-                        'image_url' => $article['urlToImage'] ?? null,
-                        'published_at' => $article['publishedAt'] ? Carbon::parse($article['publishedAt']) : null,
-                        'author' => $article['author'] ?? null,
-                        'category_id' => $category->id,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
+                    $processAllArticles = array_merge($processAllArticles, $processArticles);
                 }
+            } catch (Exception $e) {
+                Log::error(get_class($this) . ' Fetching Error: ' . $e->getMessage());
             }
-
-            return $processArticles;
         }
 
-        return [];
+        return $processAllArticles;
     }
 }

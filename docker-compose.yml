@@ -14,6 +14,7 @@ services:
     working_dir: /var/www
     volumes:
       - .:/var/www
+      - ./docker/php/supervisord.conf/:/etc/supervisor/conf.d/supervisord.conf
       - ./vendor:/var/www/vendor
       - ./storage:/var/www/storage
     networks:
