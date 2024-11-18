@@ -23,21 +23,29 @@ Route::middleware(['throttle:60,1', 'auth:sanctum'])->group(function () {
         ->middleware(['ability:user-info']);
 
     Route::post('/user/preferences', [UserPreferenceController::class, 'setPreferences'])
-        ->middleware(['ability:set-preferences']);
+        ->middleware(['ability:preferences']);
     Route::get('/user/preferences', [UserPreferenceController::class, 'getPreferences'])
-        ->middleware(['ability:get-preferences']);
+        ->middleware(['ability:preferences']);
     Route::get('/user/news-feed', [UserPreferenceController::class, 'personalizedFeed'])
-        ->middleware(['ability:personalized-feed']);
+        ->middleware(['ability:preferences']);
 
-    Route::get('/articles', [ArticleController::class, 'index']);
-    Route::get('/articles/{id}', [ArticleController::class, 'show']);
+    Route::get('/articles', [ArticleController::class, 'index'])
+        ->middleware(['ability:articles']);
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])
+        ->middleware(['ability:articles']);
 
-    Route::get('/categories', [CategoryController::class, 'index']);
-    Route::get('/categories/{id}', [CategoryController::class, 'show']);
+    Route::get('/categories', [CategoryController::class, 'index'])
+        ->middleware(['ability:categories']);
+    Route::get('/categories/{id}', [CategoryController::class, 'show'])
+        ->middleware(['ability:categories']);
 
-    Route::get('/authors', [AuthorController::class, 'index']);
-    Route::get('/authors/{id}', [AuthorController::class, 'show']);
+    Route::get('/authors', [AuthorController::class, 'index'])
+        ->middleware(['ability:authors']);
+    Route::get('/authors/{id}', [AuthorController::class, 'show'])
+        ->middleware(['ability:authors']);
 
-    Route::get('/sources', [SourceController::class, 'index']);
-    Route::get('/sources/{id}', [SourceController::class, 'show']);
+    Route::get('/sources', [SourceController::class, 'index'])
+        ->middleware(['ability:sources']);
+    Route::get('/sources/{id}', [SourceController::class, 'show'])
+        ->middleware(['ability:sources']);
 });

@@ -24,9 +24,12 @@ class AuthController extends ApiController
     private array $abilities = [
         'logout',
         'user-info',
-        'set-preferences',
-        'get-preferences',
-        'personalized-feed',
+        'preferences',
+        'preferences',
+        'articles',
+        'categories',
+        'authors',
+        'sources',
     ];
 
     /**
