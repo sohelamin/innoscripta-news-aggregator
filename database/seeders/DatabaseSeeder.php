@@ -53,6 +53,18 @@ class DatabaseSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
+            [
+                'name' => 'TheGuardian',
+                'url' => 'https://www.theguardian.com/',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'name' => 'NewYorkTimes',
+                'url' => 'https://www.nytimes.com/',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ]);
         Article::factory(20)->create();
     }
