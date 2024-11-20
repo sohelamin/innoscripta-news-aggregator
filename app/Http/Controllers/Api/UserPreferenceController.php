@@ -9,10 +9,63 @@ use Illuminate\Http\Request;
 class UserPreferenceController extends ApiController
 {
     /**
-     * Set user preferences.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * @OA\Post(
+     *     path="/api/user/preferences",
+     *     tags={"Preferences"},
+     *     summary="Set the preferences",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"source_ids", "category_ids", "author_ids"},
+     *                 @OA\Property(
+     *                     property="source_ids",
+     *                     type="array",
+     *                     description="Source IDs",
+     *                     @OA\Items(
+     *                         type="integer"
+     *                     )
+     *                 ),
+     *                 @OA\Property(
+     *                     property="category_ids",
+     *                     type="array",
+     *                     description="Category IDs",
+     *                     @OA\Items(
+     *                         type="integer"
+     *                     )
+     *                 ),
+     *                 @OA\Property(
+     *                     property="author_ids",
+     *                     type="array",
+     *                     description="Author IDs",
+     *                     @OA\Items(
+     *                         type="integer"
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="boolean", example="true"),
+     *             @OA\Property(property="message", type="string", example="Success"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *         )
+     *     )
+     * )
      */
     public function setPreferences(Request $request): JsonResponse
     {
@@ -43,10 +96,30 @@ class UserPreferenceController extends ApiController
     }
 
     /**
-     * Get the preferences.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * @OA\Get(
+     *     path="/api/user/preferences",
+     *     tags={"Preferences"},
+     *     summary="Get the preferences",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="boolean", example="true"),
+     *             @OA\Property(property="message", type="string", example="Success"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *         )
+     *     )
+     * )
      */
     public function getPreferences(Request $request): JsonResponse
     {
@@ -56,10 +129,30 @@ class UserPreferenceController extends ApiController
     }
 
     /**
-     * Get the personalized news.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * @OA\Get(
+     *     path="/api/user/news-feed",
+     *     tags={"Preferences"},
+     *     summary="Get the preferences",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="boolean", example="true"),
+     *             @OA\Property(property="message", type="string", example="Success"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *         )
+     *     )
+     * )
      */
     public function personalizedFeed(Request $request): JsonResponse
     {
