@@ -29,5 +29,11 @@
         <server name="QUEUE_CONNECTION" value="sync" force="true"/>
         <server name="SESSION_DRIVER" value="array" force="true"/>
         <server name="TELESCOPE_ENABLED" value="false" force="true"/>
+        <server name="NEWSAPI_URL" value="https://newsapi.org/v2" force="true"/>
+        <server name="NEWSAPI_KEY" value="test_key" force="true"/>
+        <server name="THE_GUARDIAN_API_URL" value="https://content.guardianapis.com" force="true"/>
+        <server name="THE_GUARDIAN_API_KEY" value="test_key" force="true"/>
+        <server name="NEW_YORK_TIMES_API_URL" value="https://api.nytimes.com/svc/topstories/v2" force="true"/>
+        <server name="NEW_YORK_TIMES_API_KEY" value="test_key" force="true"/>
     </php>
 </phpunit>
