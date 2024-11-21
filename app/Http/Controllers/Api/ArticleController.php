@@ -117,7 +117,7 @@ class ArticleController extends ApiController
         $cacheKey = "article_{$id}";
 
         $article = cache()->remember($cacheKey, now()->addHours(1), function () use ($id) {
-            return Article::with(['source:id,name', 'author:id,name', 'categories:id,name'])
+            return Article::with(['source:id,name', 'author:id,name', 'category:id,name'])
                 ->findOrFail($id);
         });
 

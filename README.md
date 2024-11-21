@@ -54,6 +54,15 @@ php artisan migrate --seed
 php artisan serve
 ```
 
+## Supervisor
+
+To update supervisor config:
+```bash
+supervisorctl reread
+supervisorctl update
+supervisorctl start new-job
+```
+
 ## API Documentation
 
 Swagger documentation is available at:
@@ -64,4 +73,11 @@ Production: <your-production-url>/api/documentation
 To generate/update Swagger docs:
 ```bash
 php artisan l5-swagger:generate
+```
+
+## Testing
+
+Run tests with PHPUnit:
+```bash
+php artisan test
 ```
