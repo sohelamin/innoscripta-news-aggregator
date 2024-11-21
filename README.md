@@ -63,6 +63,13 @@ supervisorctl update
 supervisorctl start new-job
 ```
 
+## Scheduler
+
+Add the scheduler command in cronjob:
+```bash
+* * * * * docker exec innoscripta_news_aggregator_app php /var/www/artisan schedule:run >> /dev/null 2>&1
+```
+
 ## API Documentation
 
 Swagger documentation is available at:
